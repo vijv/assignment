@@ -10,8 +10,8 @@ WITH first_txn AS (
 )
 SELECT
   DATE_TRUNC('month', g.min_txn_date) AS activation_month,
-  -- multiplication with 1.0 is needed as division of two integers in Presto
-  -- will result in an integers, but we require double value for percentage
+  -- below metrics can be rounded and casted to varchar to display as
+  -- percentage if required
   COUNT_IF(month_num = 1) * 1.0/COUNT_IF(month_num = 0) AS "first_month",
   COUNT_IF(month_num = 2) * 1.0/COUNT_IF(month_num = 0) AS "second_month",
   COUNT_IF(month_num = 3) * 1.0/COUNT_IF(month_num = 0) AS "third_month",
