@@ -1,7 +1,8 @@
 # Assignment
 
 ## SQL
-Please look at **customer_retention.sql** file. I have added my comments around few SQL clauses.
+- Please look at **customer_retention.sql** file. I have added my comments around few SQL clauses.
+- I have also added a **customer_retention_jinja.sql** file. SQL here is exactly the same, but it uses JINJA to create as many retention months the user desires by updating num_months variable
 
 ## Modelling
 I have added many markdown comments in the jupyter notebook **modelling.ipynb** that cover (a) to (d) parts of the question. Part (e) is covered below:
@@ -15,20 +16,48 @@ Potential issues to deploy model into productions:
 - Re-training - model will require re-training on new data and its performance will need to be re-evaluated and reported to stakeholders
 
 ## Experiment Design
-It was observed in exploratory data analysis that customers with an international plan have more than 40% churn. It was further strengthened by the our predictive model that international calls, charges and plans are among top important features. Thus, I am of the opinion that the telecom company should experiment with international plan customer segment to explore ways to reduce churn and improve customer retention.
 
+It was observed in exploratory data analysis that customers with an international plan have more than 40% churn. It was further strengthened by the our predictive model that international calls, charges and plans are among top important features. Thus, I am of the opinion that the telecom company should experiment with international plan customer segment to explore ways to reduce churn and improve customer retention.
 
 **Experiment Objective**
 
-To deduce if offering a more competitive/niche international plan over the existing one will help to reduce customer churn
+To deduce if offering a more competitive/niche international plan over the existing one will help to reduce customer churn. 
 
 **Experiment Workflow**
 
-- Telecom company to propose new international plans. For this analysis, let's assume the company came up with 2 new plans - Plan A & Plan B
-- Randomly select a sample of existing customers with international plans. Assuming the telecom company has a huge customer bases, let’s choose a conservative sample size of 30k customers
-- Randomly divide the sample into 3 groups - Plan A, Plan B & Existing Plan. Existing plan customers act as a control group and other two act as test group
+Let’s assume the telecom provider came up with a new “improved international plan” and will conduct an A/B test to measure drop in churn percentage of international plan customers.
+
+Test group - customers switched to new plan
+Control group - customers on existing international plan
+
+***Null hypothesis***
+
+Test group churn percentage = Control group churn percentage
+
+***Alternate hypothesis***
+
+Test group churn percentage ≠ Control group churn percentage
+
+***Determine sample size***
+
+Using the correct sample size is important to detect difference between the two churn percentages.
+
+Baseline churn percentage - 40% (churn percentage among existing international plan customers)
+
+Let’s assume we want to observer a minimum detectable effect of 4%.
+
+Applying 95% statistical significance on an online calculator, we get a sample size of 14,000 per group. Experimenting with 28k customers seems reasonable for a telecom provider as they have customer bases in millions.
+
+**Implementation**
+
+- Randomly select a sample of 28,000 existing customers with international plans
+- Randomly divide sample into 2 groups - new plan (test) & existing plan (control)
 - Charge customers as per their treatment group for one billing cycle
 - Measure churn percentage in each treatment group
+
+**Measure**
+
+Measure churn percentages in both the groups. If we see a minimum drop in churn percentage of 4% then we reject the null hypothesis.
 
 **Risks**
 
